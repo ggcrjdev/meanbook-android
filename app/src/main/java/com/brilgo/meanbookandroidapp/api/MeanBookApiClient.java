@@ -15,20 +15,20 @@ import retrofit2.http.Path;
 
 public interface MeanBookApiClient {
 
-	@GET("users/list")
-	Call<UsersListResponse> list();
+    @GET("users/list")
+    Call<UsersListResponse> list();
 
-	@POST("users/current")
-	Call<UsersCurrentResponse> getCurrent();
+    @POST("users/current")
+    Call<UsersCurrentResponse> getCurrent();
 
-	@POST("users/login")
-	Call<User> login(@Body UsernameRequest request);
+    @POST("users/login")
+    Call<User> login(@Body UsernameRequest request);
 
-	@POST("users/logout")
-	Call<UsersLogoutResponse> logout(@Body UsernameRequest request);
+    @POST("users/logout")
+    Call<UsersLogoutResponse> logout(@Body UsernameRequest request);
 
-	@GET("posts/list/{username}/{pageNumber}")
-	Call<PostsListResponse> listPosts(
-			@Path("username") String username,
-			@Path("pageNumber") Integer pageNumber);
+    @GET("posts/list/{username}/{pageNumber}")
+    Call<PostsListResponse> listPosts(
+            @Path("username") String username,
+            @Path("pageNumber") Integer pageNumber);
 }
