@@ -13,26 +13,6 @@
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <TextView
-        android:id="@+id/instructionsText2"
-        android:text="@string/instruction2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="43dp"
-        android:layout_above="@+id/login"
-        android:layout_centerHorizontal="true"
-        android:textSize="18sp" />
-
-    <TextView
-        android:id="@+id/instructionsText1"
-        android:text="@string/instruction1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="18dp"
-        android:textSize="32sp"
-        android:layout_above="@+id/instructionsText2"
-        android:layout_centerHorizontal="true" />
-
     <EditText
         android:id="@+id/login"
         android:inputType="textPersonName"
@@ -50,7 +30,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|right"
-        android:layout_alignTop="@+id/login"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="53dp" />
+        android:layout_below="@+id/login"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/instructionsText2"
+        android:text="@string/instruction2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="19dp"
+        android:textSize="18sp"
+        android:layout_above="@+id/login"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/instructionsText1"
+        android:text="@string/instruction1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="28dp"
+        android:textSize="32sp"
+        android:layout_above="@+id/instructionsText2"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
