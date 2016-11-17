@@ -6,11 +6,11 @@ import com.brilgo.meanbookandroidapp.api.request.UsernameRequest;
 import com.brilgo.meanbookandroidapp.api.response.Post;
 import com.brilgo.meanbookandroidapp.api.response.PostsListResponse;
 import com.brilgo.meanbookandroidapp.api.response.User;
+import com.brilgo.meanbookandroidapp.api.response.UsersLogoutResponse;
 
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -58,10 +58,17 @@ public class MeanBookApi {
 		return response;
 	}
 
+	public boolean logout(String username) {
+		UsernameRequest request = new UsernameRequest(username);
+		UsersLogoutResponse response = executeRequest(meanBookApiClient.logout(request));
+		return response.logggedOut;
+	}
+
     public List<Post> listPosts(String username) {
         PostsListResponse response = executeRequest(meanBookApiClient.listPosts(username, 1));
         if (response != null) {
-            Log.d(getClass().getName(), MessageFormat.format("Retrieving {0} posts included by the {1} user.",
+            Log.d(getClass().getName(), MessageFormat.format(
+                    "Retrieving {0} posts included by the {1} user.",
                     response.postsCount, username));
             return response.posts;
         } else {
