@@ -31,6 +31,7 @@ public class TimelineActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle(getString(R.string.title_activity_timeline) + ": " + getCurrentUser().username);
         setContentView(R.layout.activity_timeline);
         addToolbar();
         addFabButton();
