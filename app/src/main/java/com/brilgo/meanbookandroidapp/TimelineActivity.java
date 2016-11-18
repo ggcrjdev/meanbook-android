@@ -26,7 +26,7 @@ import static com.brilgo.meanbookandroidapp.MainActivity.USER_KEY;
 
 public class TimelineActivity extends AppCompatActivity {
 
-    private MeanBookApi meanBookApi = new MeanBookApi();
+    private MeanBookApi meanBookApi = MeanBookApi.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

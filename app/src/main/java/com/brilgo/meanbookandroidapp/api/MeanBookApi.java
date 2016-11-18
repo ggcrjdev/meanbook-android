@@ -1,7 +1,9 @@
 package com.brilgo.meanbookandroidapp.api;
 
+import android.content.Context;
 import android.util.Log;
 
+import com.brilgo.meanbookandroidapp.api.cookie.PersistentCookieStore;
 import com.brilgo.meanbookandroidapp.api.request.PostsAddRequest;
 import com.brilgo.meanbookandroidapp.api.request.UsernameRequest;
 import com.brilgo.meanbookandroidapp.api.response.Post;
@@ -11,37 +13,62 @@ import com.brilgo.meanbookandroidapp.api.response.UsersListResponse;
 import com.brilgo.meanbookandroidapp.api.response.UsersLogoutResponse;
 
 import java.io.IOException;
+import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.JavaNetCookieJar;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MeanBookApi {
+public final class MeanBookApi {
 
-    private static final String BASE_URL_API = "http://10.0.2.2:3000/api/1.0/";
+    private static final String API_BASE_URL = "http://10.0.2.2:3000/api/1.0/";
 
-    private static Retrofit retrofit;
-    private static MeanBookApiEndpoint meanBookApiEndpoint;
+    private static MeanBookApi instance;
 
-    public MeanBookApi() {
-        init();
+    private Retrofit retrofit;
+    private MeanBookApiEndpoint meanBookApiEndpoint;
+
+    private MeanBookApi() {
     }
 
-    public static void init() {
+    public static MeanBookApi getInstance() {
+        if (instance == null) {
+            instance = new MeanBookApi();
+        }
+        return instance;
+    }
+
+    public void init(Context context) {
         if (meanBookApiEndpoint == null) {
-            createRetrofit();
+            createRetrofit(context);
             meanBookApiEndpoint = retrofit.create(MeanBookApiEndpoint.class);
         }
     }
 
-    private static void createRetrofit() {
+    private void createRetrofit(Context context) {
         if (retrofit == null) {
+            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+            CookieHandler cookieHandler = new CookieManager(
+                    new PersistentCookieStore(context), CookiePolicy.ACCEPT_ALL);
+            OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                    .cookieJar(new JavaNetCookieJar(cookieHandler))
+                    .addInterceptor(new RequestHeaderInterceptor())
+                    .addInterceptor(logging)
+                    .build();
+
             retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL_API)
+                    .baseUrl(API_BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
+                    .client(okHttpClient)
                     .build();
         }
     }

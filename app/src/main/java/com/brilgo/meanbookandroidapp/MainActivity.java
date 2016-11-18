@@ -15,12 +15,14 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String USER_KEY = "MainActivity.USER";
 
-    private MeanBookApi meanBookApi = new MeanBookApi();
+    private MeanBookApi meanBookApi = MeanBookApi.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
+        meanBookApi.init(getApplicationContext());
+
         setContentView(R.layout.activity_main);
         addToolbar();
     }
