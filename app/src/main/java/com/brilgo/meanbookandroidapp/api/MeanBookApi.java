@@ -29,6 +29,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public final class MeanBookApi {
 
+    private static final String TAG = MeanBookApi.class.getSimpleName();
     private static final String API_BASE_URL = "http://10.0.2.2:3000/api/1.0/";
 
     private static MeanBookApi instance;
@@ -83,8 +84,7 @@ public final class MeanBookApi {
 
     public User login(String username) {
         UsernameRequest request = new UsernameRequest(username);
-        User response = executeRequest(meanBookApiEndpoint.login(request));
-        return response;
+        return executeRequest(meanBookApiEndpoint.login(request));
     }
 
     public boolean logout(String username) {
@@ -105,8 +105,7 @@ public final class MeanBookApi {
     public List<Post> listPosts(String username) {
         PostsListResponse response = executeRequest(meanBookApiEndpoint.listPosts(username, 1));
         if (response != null) {
-            Log.d(getClass().getName(), MessageFormat.format(
-                    "Retrieving {0} posts included by the {1} user.",
+            Log.d(TAG, MessageFormat.format("Retrieving {0} posts included by the {1} user.",
                     response.postsCount, username));
             return response.posts;
         } else {

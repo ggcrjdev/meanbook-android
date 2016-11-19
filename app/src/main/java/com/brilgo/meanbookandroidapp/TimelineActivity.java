@@ -26,6 +26,8 @@ import static com.brilgo.meanbookandroidapp.MainActivity.USER_KEY;
 
 public class TimelineActivity extends AppCompatActivity {
 
+    private static final String TAG = TimelineActivity.class.getSimpleName();
+
     private MeanBookApi meanBookApi = MeanBookApi.getInstance();
 
     @Override
@@ -97,7 +99,7 @@ public class TimelineActivity extends AppCompatActivity {
 
     public void logout() {
         User currentUser = getCurrentUser();
-        Log.d(getClass().getName(), "Executing the logout action...");
+        Log.d(TAG, "Executing the logout action...");
         meanBookApi.logout(currentUser.username);
         Intent intent = new Intent(this, MainActivity.class);
         intent.removeExtra(MainActivity.USER_KEY);
