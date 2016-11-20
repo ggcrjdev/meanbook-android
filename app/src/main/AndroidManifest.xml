@@ -24,5 +24,16 @@
             android:name=".TimelineActivity"
             android:label="@string/title_activity_timeline"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AddPostActivity"
+            android:label="@string/title_activity_add_post"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
+
 </manifest>
