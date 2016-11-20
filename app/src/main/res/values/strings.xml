@@ -1,8 +1,5 @@
 <resources>
     <string name="app_name">MEAM Book</string>
-    <string name="title_activity_timeline">Timeline</string>
-    <string name="title_activity_add_post">Publish post</string>
-
     <string name="action_logout">Logout</string>
 
     <string name="hint_login">Login&#8230;</string>
@@ -10,7 +7,14 @@
     <string name="label_main_instruction1">You need to connect.</string>
     <string name="label_main_instruction2">Enter your username and click on "Sign in"</string>
 
+    <string name="title_activity_timeline">Timeline</string>
+
+    <string name="title_activity_add_post">Publish post</string>
     <string name="hint_post">Write you think&#8230;</string>
     <string name="button_publish">Publish</string>
     <string name="label_add_post">What you thinking now to publish?</string>
+
+    <string name="title_activity_api">Ooops!</string>
+    <string name="hint_api_error">):</string>
+    <string name="hint_api_error_detail">Sorry, we are experiencing a problem with our services.</string>
 </resources>

@@ -19,9 +19,10 @@ abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState, @LayoutRes int layoutResID) {
         super.onCreate(savedInstanceState);
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
+        new ExceptionHandler(this);
+
         setContentView(layoutResID);
         addDefaultToolbar();
-
         meanBookApi.init(getApplicationContext());
     }
 
