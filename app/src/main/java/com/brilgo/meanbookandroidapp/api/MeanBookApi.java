@@ -3,6 +3,7 @@ package com.brilgo.meanbookandroidapp.api;
 import android.content.Context;
 import android.util.Log;
 
+import com.brilgo.meanbookandroidapp.BaseActivity;
 import com.brilgo.meanbookandroidapp.api.cookie.PersistentCookieStore;
 import com.brilgo.meanbookandroidapp.api.request.PostsAddRequest;
 import com.brilgo.meanbookandroidapp.api.request.UsernameRequest;
@@ -37,6 +38,7 @@ public final class MeanBookApi {
 
     private Retrofit retrofit;
     private MeanBookApiEndpoint meanBookApiEndpoint;
+    private ResponseErrorHandleInterceptor responseErrorHandle;
 
     private MeanBookApi() {
     }
@@ -59,11 +61,13 @@ public final class MeanBookApi {
         if (retrofit == null) {
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+            responseErrorHandle = new ResponseErrorHandleInterceptor();
             CookieHandler cookieHandler = new CookieManager(
                     new PersistentCookieStore(context), CookiePolicy.ACCEPT_ALL);
             OkHttpClient okHttpClient = new OkHttpClient.Builder()
                     .cookieJar(new JavaNetCookieJar(cookieHandler))
                     .addInterceptor(new RequestHeaderInterceptor())
+                    .addInterceptor(responseErrorHandle)
                     .addInterceptor(logging)
                     .build();
 
@@ -81,6 +85,10 @@ public final class MeanBookApi {
         } catch (IOException e) {
             throw new RequestApiException("Error during the request execution.", e);
         }
+    }
+
+    public void setCurrentActivity(BaseActivity baseActivity) {
+        responseErrorHandle.setCurrentActivity(baseActivity);
     }
 
     public User login(String username) {

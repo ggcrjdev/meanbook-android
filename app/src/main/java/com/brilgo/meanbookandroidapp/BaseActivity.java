@@ -11,7 +11,7 @@ import android.view.View;
 
 import com.brilgo.meanbookandroidapp.api.MeanBookApi;
 
-abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
     final MeanBookApi meanBookApi = MeanBookApi.getInstance();
     final UserDataStore userDataStore = new UserDataStore();
@@ -24,6 +24,7 @@ abstract class BaseActivity extends AppCompatActivity {
         setContentView(layoutResID);
         addDefaultToolbar();
         meanBookApi.init(getApplicationContext());
+        meanBookApi.setCurrentActivity(this);
     }
 
     private void addDefaultToolbar() {
