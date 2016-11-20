@@ -2,21 +2,14 @@ package com.brilgo.meanbookandroidapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 
-import com.brilgo.meanbookandroidapp.api.MeanBookApi;
-
-public class AddPostActivity extends AppCompatActivity {
-
-    private MeanBookApi meanBookApi = MeanBookApi.getInstance();
+public class AddPostActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_post);
-        ActivityUtils.addDefaultToolbar(this);
+        super.onCreate(savedInstanceState, R.layout.activity_add_post);
     }
 
     public void addPost(View view) {

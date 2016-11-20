@@ -3,7 +3,6 @@ package com.brilgo.meanbookandroidapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,27 +11,21 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.brilgo.meanbookandroidapp.api.MeanBookApi;
 import com.brilgo.meanbookandroidapp.api.response.Post;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TimelineActivity extends AppCompatActivity {
+public class TimelineActivity extends BaseActivity {
 
     private static final String TAG = TimelineActivity.class.getSimpleName();
 
-    private MeanBookApi meanBookApi = MeanBookApi.getInstance();
-    private UserDataStore userDataStore = new UserDataStore();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState, R.layout.activity_timeline);
         setTitle(MessageFormat.format("{0} ({1})",
-                getString(R.string.title_activity_timeline), getCurrentUsername()));
-        setContentView(R.layout.activity_timeline);
-        ActivityUtils.addDefaultToolbar(this);
+                getString(R.string.title_activity_timeline), getStoredCurrentUsername()));
         addFabButton();
 
         loadUserPostsToListView();
@@ -71,15 +64,11 @@ public class TimelineActivity extends AppCompatActivity {
     }
 
     private void loadUserPostsToListView() {
-        List<Post> userPosts = meanBookApi.listPosts(getCurrentUsername());
+        List<Post> userPosts = meanBookApi.listPosts(getStoredCurrentUsername());
 
         ViewGroup layout = (ViewGroup) findViewById(R.id.content_timeline);
         ListView postsList = (ListView) layout.findViewById(R.id.posts_list);
         postsList.setAdapter(createArrayAdapterWithPosts(userPosts));
-    }
-
-    private String getCurrentUsername() {
-        return userDataStore.getCurrentUsername(getApplicationContext());
     }
 
     private ArrayAdapter<String> createArrayAdapterWithPosts(List<Post> userPosts) {
@@ -93,9 +82,10 @@ public class TimelineActivity extends AppCompatActivity {
 
     public void logout() {
         Log.d(TAG, "Executing the logout action...");
-        meanBookApi.logout(getCurrentUsername());
+        meanBookApi.logout(getStoredCurrentUsername());
         userDataStore.removeUserData(getApplicationContext());
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
 }

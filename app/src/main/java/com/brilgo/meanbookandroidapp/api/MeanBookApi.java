@@ -9,6 +9,7 @@ import com.brilgo.meanbookandroidapp.api.request.UsernameRequest;
 import com.brilgo.meanbookandroidapp.api.response.Post;
 import com.brilgo.meanbookandroidapp.api.response.PostsListResponse;
 import com.brilgo.meanbookandroidapp.api.response.User;
+import com.brilgo.meanbookandroidapp.api.response.UsersCurrentResponse;
 import com.brilgo.meanbookandroidapp.api.response.UsersListResponse;
 import com.brilgo.meanbookandroidapp.api.response.UsersLogoutResponse;
 
@@ -91,6 +92,15 @@ public final class MeanBookApi {
         UsernameRequest request = new UsernameRequest(username);
         UsersLogoutResponse response = executeRequest(meanBookApiEndpoint.logout(request));
         return response.logggedOut;
+    }
+
+    public User getCurrentUser() {
+        UsersCurrentResponse response = executeRequest(meanBookApiEndpoint.getCurrent());
+        if (response != null && response.authenticated) {
+            return new User(response.username);
+        } else {
+            return null;
+        }
     }
 
     public List<User> listOnlineUsers() {

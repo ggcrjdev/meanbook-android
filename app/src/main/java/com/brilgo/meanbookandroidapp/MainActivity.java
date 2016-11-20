@@ -2,44 +2,43 @@ package com.brilgo.meanbookandroidapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.StrictMode;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 
-import com.brilgo.meanbookandroidapp.api.MeanBookApi;
 import com.brilgo.meanbookandroidapp.api.response.User;
 
-public class MainActivity extends AppCompatActivity {
-
-    private MeanBookApi meanBookApi = MeanBookApi.getInstance();
-    private UserDataStore userDataStore = new UserDataStore();
+public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
-        setContentView(R.layout.activity_main);
-        ActivityUtils.addDefaultToolbar(this);
+        super.onCreate(savedInstanceState, R.layout.activity_main);
+        loadCurrentUser();
+    }
 
-        meanBookApi.init(getApplicationContext());
+    private void loadCurrentUser() {
+        User user = meanBookApi.getCurrentUser();
+        validateUserAndStartTimelineActivity(user, null);
     }
 
     public void login(View view) {
         EditText loginField = (EditText) findViewById(R.id.login_field);
         String username = loginField.getText().toString();
         User user = meanBookApi.login(username);
-        if (isUserAuthenticated(user)) {
+        validateUserAndStartTimelineActivity(user, view);
+    }
+
+    private void validateUserAndStartTimelineActivity(User user, View view) {
+        if (isUserValid(user)) {
             userDataStore.addUserData(getApplicationContext(), user);
             Intent intent = new Intent(this, TimelineActivity.class);
             startActivity(intent);
-        } else {
-            Snackbar.make(view, "Authentication failed!", Snackbar.LENGTH_LONG).show();
+            finish();
+        } else if (view != null) {
+            showSnack("Authentication failed!", view);
         }
     }
 
-    private boolean isUserAuthenticated(User user) {
+    private boolean isUserValid(User user) {
         return user != null && !"".equals(user.username);
     }
 }
