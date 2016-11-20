@@ -17,24 +17,22 @@ public class MainActivity extends BaseActivity {
 
     private void loadCurrentUser() {
         User user = meanBookApi.getCurrentUser();
-        validateUserAndStartTimelineActivity(user, null);
+        validateUserAndStartTimelineActivity(user);
     }
 
     public void login(View view) {
         EditText loginField = (EditText) findViewById(R.id.login_field);
         String username = loginField.getText().toString();
         User user = meanBookApi.login(username);
-        validateUserAndStartTimelineActivity(user, view);
+        validateUserAndStartTimelineActivity(user);
     }
 
-    private void validateUserAndStartTimelineActivity(User user, View view) {
+    private void validateUserAndStartTimelineActivity(User user) {
         if (isUserValid(user)) {
             userDataStore.addUserData(getApplicationContext(), user);
             Intent intent = new Intent(this, TimelineActivity.class);
             startActivity(intent);
             finish();
-        } else if (view != null) {
-            showSnack("Authentication failed!", view);
         }
     }
 
