@@ -68,7 +68,8 @@ public class TimelineActivity extends BaseActivity {
 
         ViewGroup layout = (ViewGroup) findViewById(R.id.content_timeline);
         ListView postsList = (ListView) layout.findViewById(R.id.posts_list);
-        postsList.setAdapter(createArrayAdapterWithPosts(userPosts));
+        postsList.setAdapter(new TimelinePostArrayAdapter(
+                this, R.layout.content_timeline_item, userPosts));
     }
 
     private ArrayAdapter<String> createArrayAdapterWithPosts(List<Post> userPosts) {

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/list_item_selector">
+
+    <TextView android:id="@+id/timeline_item_author"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textSize="18sp"
+        android:textColor="@color/colorAccent"/>
+    <TextView android:id="@+id/timeline_item_post"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"/>
+    <TextView android:id="@+id/timeline_item_pub_date"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textSize="12sp" />
+</LinearLayout>
