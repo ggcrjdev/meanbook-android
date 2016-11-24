@@ -1,11 +1,14 @@
 package com.brilgo.meanbookandroidapp;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.brilgo.meanbookandroidapp.api.response.Post;
 
@@ -42,10 +45,24 @@ public class TimelinePostArrayAdapter extends ArrayAdapter<Post> {
             }
             if (tt2 != null) {
                 tt2.setText(post.text);
+                addClickListenerCopyToClipboard(tt2);
             }
             if (tt3 != null) {
                 tt3.setText(post.timestamp.toString());
             }
         }
+    }
+
+    private void addClickListenerCopyToClipboard(final TextView textView) {
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ClipboardManager cm = (ClipboardManager) getContext().getSystemService(
+                        Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("Post text",textView.getText().toString());
+                cm.setPrimaryClip(clip);
+                Toast.makeText(getContext(), "Copied", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
