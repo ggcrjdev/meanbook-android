@@ -17,15 +17,18 @@ import com.brilgo.meanbookandroidapp.api.response.Post;
 import java.text.DateFormat;
 import java.util.List;
 
+import static java.text.DateFormat.MEDIUM;
+import static java.text.DateFormat.SHORT;
+
 public class TimelinePostArrayAdapter extends ArrayAdapter<Post> {
 
-    private static final DateFormat dateFormat = DateFormat.getDateTimeInstance();
+    private static final DateFormat dateFormat = DateFormat.getDateTimeInstance(MEDIUM, SHORT);
 
     private int itemResource;
 
     public TimelinePostArrayAdapter(Context context, int resource, List<Post> items) {
         super(context, resource, items);
-        this.itemResource = resource;
+        itemResource = resource;
     }
 
     @Override
