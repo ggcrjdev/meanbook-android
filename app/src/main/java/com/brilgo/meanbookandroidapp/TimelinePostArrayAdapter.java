@@ -12,9 +12,12 @@ import android.widget.Toast;
 
 import com.brilgo.meanbookandroidapp.api.response.Post;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class TimelinePostArrayAdapter extends ArrayAdapter<Post> {
+
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     private int itemResource;
 
@@ -37,18 +40,18 @@ public class TimelinePostArrayAdapter extends ArrayAdapter<Post> {
 
     private void setItemValues(View v, Post post) {
         if (post != null) {
-            TextView tt1 = (TextView) v.findViewById(R.id.timeline_item_author);
-            TextView tt2 = (TextView) v.findViewById(R.id.timeline_item_post);
-            TextView tt3 = (TextView) v.findViewById(R.id.timeline_item_pub_date);
-            if (tt1 != null) {
-                tt1.setText(post.author);
+            TextView authorText = (TextView) v.findViewById(R.id.timeline_item_author);
+            if (authorText != null) {
+                authorText.setText(post.author);
             }
-            if (tt2 != null) {
-                tt2.setText(post.text);
-                addClickListenerCopyToClipboard(tt2);
+            TextView postText = (TextView) v.findViewById(R.id.timeline_item_post);
+            if (postText != null) {
+                postText.setText(post.text);
+                addClickListenerCopyToClipboard(postText);
             }
-            if (tt3 != null) {
-                tt3.setText(post.timestamp.toString());
+            TextView publicationDateText = (TextView) v.findViewById(R.id.timeline_item_pub_date);
+            if (publicationDateText != null) {
+                publicationDateText.setText(dateFormat.format(post.timestamp));
             }
         }
     }

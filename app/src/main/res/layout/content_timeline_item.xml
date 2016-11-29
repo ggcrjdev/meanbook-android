@@ -1,22 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/list_item_selector">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="5dip">
 
-    <TextView android:id="@+id/timeline_item_author"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <TextView
+        android:id="@+id/timeline_item_author"
         android:textSize="18sp"
-        android:textColor="@color/colorAccent"/>
-    <TextView android:id="@+id/timeline_item_post"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="16sp"
-        android:textColor="@android:color/black"/>
-    <TextView android:id="@+id/timeline_item_pub_date"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:textStyle="bold"
+        android:textColor="@color/colorAccent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/timeline_item_pub_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/timeline_item_author"
+        android:layout_alignBottom="@+id/timeline_item_author"
+        android:layout_alignParentEnd="true"
         android:textSize="12sp" />
-</LinearLayout>
+
+    <TextView
+        android:id="@+id/timeline_item_post"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/timeline_item_pub_date"
+        android:layout_marginTop="3dip"
+        android:textSize="16sp"
+        android:textColor="@android:color/black" />
+</RelativeLayout>
