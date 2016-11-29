@@ -8,18 +8,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.brilgo.meanbookandroidapp.api.response.Post;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 public class TimelineActivity extends BaseActivity {
 
     private static final String TAG = TimelineActivity.class.getSimpleName();
+    private static final int REQUEST_EXIT = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +59,14 @@ public class TimelineActivity extends BaseActivity {
 
     private void startAddPostActivity(View view) {
         Intent intent = new Intent(this, AddPostActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_EXIT);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_EXIT && resultCode == RESULT_OK) {
+            finish();
+        }
     }
 
     private void loadUserPostsToListView() {
@@ -70,15 +76,6 @@ public class TimelineActivity extends BaseActivity {
         ListView postsList = (ListView) layout.findViewById(R.id.posts_list);
         postsList.setAdapter(new TimelinePostArrayAdapter(
                 this, R.layout.content_timeline_item, userPosts));
-    }
-
-    private ArrayAdapter<String> createArrayAdapterWithPosts(List<Post> userPosts) {
-        List<String> adaptedPosts = new ArrayList<>(userPosts.size());
-        for (Post userPost : userPosts) {
-            adaptedPosts.add(MessageFormat.format("[{0}] {1}: {2}",
-                    userPost.timestamp, userPost.author, userPost.text));
-        }
-        return new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, adaptedPosts);
     }
 
     public void logout() {

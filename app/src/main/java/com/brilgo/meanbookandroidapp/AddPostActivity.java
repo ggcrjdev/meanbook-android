@@ -19,6 +19,7 @@ public class AddPostActivity extends BaseActivity {
 
         Intent intent = new Intent(this, TimelineActivity.class);
         startActivity(intent);
+        setResult(RESULT_OK, null);
         finish();
     }
 }
