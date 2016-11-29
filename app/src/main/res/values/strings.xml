@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MEAM Book</string>
+    <string name="app_name">MEAN Book</string>
     <string name="action_logout">Logout</string>
 
     <string name="hint_login">Login&#8230;</string>
