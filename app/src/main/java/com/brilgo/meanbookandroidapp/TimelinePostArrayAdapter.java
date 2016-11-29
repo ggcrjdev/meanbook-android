@@ -3,6 +3,8 @@ package com.brilgo.meanbookandroidapp;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +14,12 @@ import android.widget.Toast;
 
 import com.brilgo.meanbookandroidapp.api.response.Post;
 
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.List;
 
 public class TimelinePostArrayAdapter extends ArrayAdapter<Post> {
 
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private static final DateFormat dateFormat = DateFormat.getDateTimeInstance();
 
     private int itemResource;
 
@@ -27,7 +29,8 @@ public class TimelinePostArrayAdapter extends ArrayAdapter<Post> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public  @NonNull View getView(int position,  @Nullable View convertView,
+            @NonNull ViewGroup parent) {
         View v = convertView;
         if (v == null) {
             LayoutInflater vi = LayoutInflater.from(getContext());

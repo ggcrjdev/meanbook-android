@@ -1,9 +1,5 @@
 package com.brilgo.meanbookandroidapp.api.response;
 
-/**
- * Created by Gustavo on 20/11/2016.
- */
-
 public class ErrorResponse {
 
     public final String type;

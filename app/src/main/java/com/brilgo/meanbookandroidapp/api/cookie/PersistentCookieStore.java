@@ -65,7 +65,7 @@ public class PersistentCookieStore implements CookieStore {
 
                 Set<HttpCookie> targetCookies = allCookies.get(uri);
                 if (targetCookies == null) {
-                    targetCookies = new HashSet<HttpCookie>();
+                    targetCookies = new HashSet<>();
                     allCookies.put(uri, targetCookies);
                 }
                 // Repeated cookies cannot exist in persistence
@@ -83,7 +83,7 @@ public class PersistentCookieStore implements CookieStore {
 
         Set<HttpCookie> targetCookies = allCookies.get(uri);
         if (targetCookies == null) {
-            targetCookies = new HashSet<HttpCookie>();
+            targetCookies = new HashSet<>();
             allCookies.put(uri, targetCookies);
         }
         targetCookies.remove(cookie);
@@ -131,7 +131,7 @@ public class PersistentCookieStore implements CookieStore {
 
     @Override
     public synchronized List<HttpCookie> getCookies() {
-        List<HttpCookie> allValidCookies = new ArrayList<HttpCookie>();
+        List<HttpCookie> allValidCookies = new ArrayList<>();
         for (URI storedUri : allCookies.keySet()) {
             allValidCookies.addAll(getValidCookies(storedUri));
         }
@@ -140,7 +140,7 @@ public class PersistentCookieStore implements CookieStore {
     }
 
     private List<HttpCookie> getValidCookies(URI uri) {
-        List<HttpCookie> targetCookies = new ArrayList<HttpCookie>();
+        List<HttpCookie> targetCookies = new ArrayList<>();
         // If the stored URI does not have a path then it must match any URI in
         // the same domain
         for (URI storedUri : allCookies.keySet()) {
@@ -155,7 +155,7 @@ public class PersistentCookieStore implements CookieStore {
 
         // Check it there are expired cookies and remove them
         if (!targetCookies.isEmpty()) {
-            List<HttpCookie> cookiesToRemoveFromPersistence = new ArrayList<HttpCookie>();
+            List<HttpCookie> cookiesToRemoveFromPersistence = new ArrayList<>();
             for (Iterator<HttpCookie> it = targetCookies.iterator(); it
                     .hasNext(); ) {
                 HttpCookie currentCookie = it.next();
@@ -225,7 +225,7 @@ public class PersistentCookieStore implements CookieStore {
 
     @Override
     public synchronized List<URI> getURIs() {
-        return new ArrayList<URI>(allCookies.keySet());
+        return new ArrayList<>(allCookies.keySet());
     }
 
     @Override
