@@ -62,8 +62,8 @@ public final class MeanBookApi extends BaseRetrofitApi<MeanBookApiEndpoint> {
         }
     }
 
-    public List<Post> listPosts(String username) {
-        PostsListResponse response = executeRequest(endpoint().listPosts(username, 1));
+    public List<Post> listPosts(String username, Integer pageNumber) {
+        PostsListResponse response = executeRequest(endpoint().listPosts(username, pageNumber));
         if (response != null) {
             Log.d(TAG, MessageFormat.format("Retrieving {0} posts included by the {1} user.",
                     response.postsCount, username));

@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ListView;
 
 import com.brilgo.meanbookandroidapp.api.response.Post;
@@ -19,6 +20,11 @@ public class TimelineActivity extends BaseActivity {
 
     private static final String TAG = TimelineActivity.class.getSimpleName();
     private static final int REQUEST_EXIT = 100;
+    private static final int FIRST_PAGE = 1;
+
+    private TimelinePostArrayAdapter timelinePostAdapter;
+    private int currentPageOfPosts = FIRST_PAGE;
+    private boolean endOfPoages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +33,7 @@ public class TimelineActivity extends BaseActivity {
                 getString(R.string.title_activity_timeline), getStoredCurrentUsername()));
         addFabButton();
 
-        loadUserPostsToListView();
+        createListViewAdapterLoadingFirstPageOfPosts();
     }
 
     @Override
@@ -69,13 +75,50 @@ public class TimelineActivity extends BaseActivity {
         }
     }
 
-    private void loadUserPostsToListView() {
-        List<Post> userPosts = meanBookApi.listPosts(getStoredCurrentUsername());
+    private void createListViewAdapterLoadingFirstPageOfPosts() {
+        List<Post> userPosts = loadNextPageOfPosts();
 
         ViewGroup layout = (ViewGroup) findViewById(R.id.content_timeline);
         ListView postsList = (ListView) layout.findViewById(R.id.posts_list);
-        postsList.setAdapter(new TimelinePostArrayAdapter(
-                this, R.layout.content_timeline_item, userPosts));
+        timelinePostAdapter = new TimelinePostArrayAdapter(
+                this, R.layout.content_timeline_item, userPosts);
+        postsList.setAdapter(timelinePostAdapter);
+        addScrollListenerLoadMorePosts(postsList);
+    }
+
+    private List<Post> loadNextPageOfPosts() {
+        List<Post> userPosts = meanBookApi.listPosts(
+                getStoredCurrentUsername(), currentPageOfPosts);
+        Log.d(TAG, MessageFormat.format("Loaded {0} posts.", userPosts.size()));
+        if (userPosts.size() < 10) {
+            endOfPoages = true;
+        } else {
+            currentPageOfPosts++;
+        }
+        return userPosts;
+    }
+
+    private void addScrollListenerLoadMorePosts(ListView postsList) {
+        postsList.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
+
+            @Override
+            public void onScroll(AbsListView lw, int firstVisibleItem,
+                    int visibleItemCount, int totalItemCount) {
+                final int lastItem = firstVisibleItem + visibleItemCount;
+                if (lw.getId() == R.id.posts_list &&
+                        lastItem == totalItemCount && !endOfPoages) {
+                    addNextPageOfPostsToAdapter();
+                }
+            }
+        });
+    }
+
+    private void addNextPageOfPostsToAdapter() {
+        List<Post> userPosts = loadNextPageOfPosts();
+        timelinePostAdapter.addAll(userPosts);
     }
 
     public void logout() {
