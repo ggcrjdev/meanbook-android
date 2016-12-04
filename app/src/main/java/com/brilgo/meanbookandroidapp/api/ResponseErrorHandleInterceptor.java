@@ -29,7 +29,7 @@ public class ResponseErrorHandleInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Response response = chain.proceed(chain.request());
-        if (response.code() >= 500) {
+        if (response.code() >= 400) {
             try {
                 String jsonString = readBodyString(response);
                 ErrorResponse error = GSON.fromJson(jsonString, ErrorResponse.class);
