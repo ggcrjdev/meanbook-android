@@ -9,6 +9,7 @@ import com.google.gson.JsonSyntaxException;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.text.MessageFormat;
 
 import okhttp3.Interceptor;
 import okhttp3.Response;
@@ -28,16 +29,24 @@ public class ResponseErrorHandleInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {
-        Response response = chain.proceed(chain.request());
-        if (response.code() >= 400) {
+        Response response = null;
+        try {
+            response = chain.proceed(chain.request());
+        } catch (IOException e) {
+            throw new RequestApiException("Error during the request execution.", e);
+        }
+
+        if (!response.isSuccessful()) {
             try {
                 String jsonString = readBodyString(response);
                 ErrorResponse error = GSON.fromJson(jsonString, ErrorResponse.class);
                 if (currentActivity != null && !currentActivity.isFinishing()) {
                     currentActivity.showOkAlert("Alert", error.detail);
                 }
-            } catch (JsonSyntaxException e) {
-                throw new RequestApiException("Error reported by the API service.");
+            } catch (IOException | JsonSyntaxException e) {
+                String msg = MessageFormat.format("Error reported by the API service when trying " +
+                        "to handle HTTP response with status code {0}.", response.code());
+                throw new RequestApiException(msg);
             }
         }
         return response;

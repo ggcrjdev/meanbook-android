@@ -15,6 +15,8 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Response;
+
 public final class MeanBookApi extends BaseRetrofitApi<MeanBookApiEndpoint> {
 
     private static final String TAG = MeanBookApi.class.getSimpleName();
@@ -35,47 +37,57 @@ public final class MeanBookApi extends BaseRetrofitApi<MeanBookApiEndpoint> {
 
     public User login(String username) {
         UsernameRequest request = new UsernameRequest(username);
-        return executeRequest(endpoint().login(request));
+        Response<User> res = getResponse(
+                endpoint().login(request));
+        if (res.isSuccessful()) {
+            return res.body();
+        } else {
+            return User.nullObject();
+        }
     }
 
     public boolean logout(String username) {
         UsernameRequest request = new UsernameRequest(username);
-        UsersLogoutResponse response = executeRequest(endpoint().logout(request));
-        return response.logggedOut;
+        Response<UsersLogoutResponse> res = getResponse(
+                endpoint().logout(request));
+        return res.isSuccessful() && res.body().logggedOut;
     }
 
     public User getCurrentUser() {
-        UsersCurrentResponse response = executeRequest(endpoint().getCurrent());
-        if (response != null && response.authenticated) {
-            return new User(response.username);
+        Response<UsersCurrentResponse> res = getResponse(
+                endpoint().getCurrent());
+        if (res.isSuccessful() && res.body().authenticated) {
+            return new User(res.body().username);
         } else {
-            return null;
+            return User.nullObject();
         }
     }
 
     public List<User> listOnlineUsers() {
-        UsersListResponse response = executeRequest(endpoint().listUsers());
-        if (response != null) {
-            return response.users;
+        Response<UsersListResponse> res = getResponse(
+                endpoint().listUsers());
+        if (res.isSuccessful()) {
+            return res.body().users;
         } else {
             return new ArrayList<>(0);
         }
     }
 
     public List<Post> listPosts(String username, Integer pageNumber) {
-        PostsListResponse response = executeRequest(endpoint().listPosts(username, pageNumber));
-        if (response != null) {
+        Response<PostsListResponse> res = getResponse(
+                endpoint().listPosts(username, pageNumber));
+        if (res.isSuccessful()) {
             Log.d(TAG, MessageFormat.format("Retrieving {0} posts included by the {1} user.",
-                    response.postsCount, username));
-            return response.posts;
+                    res.body().postsCount, username));
+            return res.body().posts;
         } else {
             return new ArrayList<>(0);
         }
     }
 
-    public void addPost(String text) {
+    public boolean addPost(String text) {
         PostsAddRequest request = new PostsAddRequest();
         request.setText(text);
-        executeRequest(endpoint().addPost(request));
+        return getResponse(endpoint().addPost(request)).isSuccessful();
     }
 }

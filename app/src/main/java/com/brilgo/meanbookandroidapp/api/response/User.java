@@ -19,6 +19,14 @@ public class User implements Serializable {
         this(username, username, new Date(0L));
     }
 
+    public static User nullObject() {
+        return new User("", "", new Date(0L));
+    }
+
+    public boolean isValid() {
+        return username != null && !"".equals(username);
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;

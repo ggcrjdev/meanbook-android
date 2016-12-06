@@ -14,6 +14,7 @@ import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -35,12 +36,16 @@ public abstract class BaseRetrofitApi<E> {
         return apiEndpoint;
     }
 
-    <RES> RES executeRequest(Call<RES> apiCall) {
+    <RES> Response<RES> getResponse(Call<RES> apiCall) {
         try {
-            return apiCall.execute().body();
+            return apiCall.execute();
         } catch (IOException e) {
             throw new RequestApiException("Error during the request execution.", e);
         }
+    }
+
+    <RES> RES getResponseBody(Call<RES> apiCall) {
+        return getResponse(apiCall).body();
     }
 
     public void init(Context context) {

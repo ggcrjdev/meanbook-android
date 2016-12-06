@@ -28,15 +28,11 @@ public class MainActivity extends BaseActivity {
     }
 
     private void validateUserAndStartTimelineActivity(User user) {
-        if (isUserValid(user)) {
+        if (user.isValid()) {
             userDataStore.addUserData(getApplicationContext(), user);
             Intent intent = new Intent(this, TimelineActivity.class);
             startActivity(intent);
             finish();
         }
-    }
-
-    private boolean isUserValid(User user) {
-        return user != null && !"".equals(user.username);
     }
 }
