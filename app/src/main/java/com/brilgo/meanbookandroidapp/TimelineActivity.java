@@ -87,7 +87,7 @@ public class TimelineActivity extends BaseActivity {
     }
 
     private List<Post> loadNextPageOfPosts() {
-        List<Post> userPosts = meanBookApi.listPosts(
+        List<Post> userPosts = api().listPosts(
                 getStoredCurrentUsername(), currentPageOfPosts);
         Log.d(TAG, MessageFormat.format("Loaded {0} posts.", userPosts.size()));
         if (userPosts.size() < 10) {
@@ -123,8 +123,8 @@ public class TimelineActivity extends BaseActivity {
 
     public void logout() {
         Log.d(TAG, "Executing the logout action...");
-        meanBookApi.logout(getStoredCurrentUsername());
-        userDataStore.removeUserData(getApplicationContext());
+        api().logout(getStoredCurrentUsername());
+        dataStore().removeUserData(getApplicationContext());
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();

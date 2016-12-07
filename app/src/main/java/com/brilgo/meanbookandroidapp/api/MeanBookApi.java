@@ -37,7 +37,7 @@ public final class MeanBookApi extends BaseRetrofitApi<MeanBookApiEndpoint> {
 
     public User login(String username) {
         UsernameRequest request = new UsernameRequest(username);
-        Response<User> res = getResponse(
+        Response<User> res = responseFrom(
                 endpoint().login(request));
         if (res.isSuccessful()) {
             return res.body();
@@ -48,13 +48,13 @@ public final class MeanBookApi extends BaseRetrofitApi<MeanBookApiEndpoint> {
 
     public boolean logout(String username) {
         UsernameRequest request = new UsernameRequest(username);
-        Response<UsersLogoutResponse> res = getResponse(
+        Response<UsersLogoutResponse> res = responseFrom(
                 endpoint().logout(request));
         return res.isSuccessful() && res.body().logggedOut;
     }
 
     public User getCurrentUser() {
-        Response<UsersCurrentResponse> res = getResponse(
+        Response<UsersCurrentResponse> res = responseFrom(
                 endpoint().getCurrent());
         if (res.isSuccessful() && res.body().authenticated) {
             return new User(res.body().username);
@@ -64,7 +64,7 @@ public final class MeanBookApi extends BaseRetrofitApi<MeanBookApiEndpoint> {
     }
 
     public List<User> listOnlineUsers() {
-        Response<UsersListResponse> res = getResponse(
+        Response<UsersListResponse> res = responseFrom(
                 endpoint().listUsers());
         if (res.isSuccessful()) {
             return res.body().users;
@@ -74,7 +74,7 @@ public final class MeanBookApi extends BaseRetrofitApi<MeanBookApiEndpoint> {
     }
 
     public List<Post> listPosts(String username, Integer pageNumber) {
-        Response<PostsListResponse> res = getResponse(
+        Response<PostsListResponse> res = responseFrom(
                 endpoint().listPosts(username, pageNumber));
         if (res.isSuccessful()) {
             Log.d(TAG, MessageFormat.format("Retrieving {0} posts included by the {1} user.",
@@ -88,6 +88,6 @@ public final class MeanBookApi extends BaseRetrofitApi<MeanBookApiEndpoint> {
     public boolean addPost(String text) {
         PostsAddRequest request = new PostsAddRequest();
         request.setText(text);
-        return getResponse(endpoint().addPost(request)).isSuccessful();
+        return responseFrom(endpoint().addPost(request)).isSuccessful();
     }
 }

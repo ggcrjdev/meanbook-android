@@ -8,13 +8,22 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.EditText;
 
 import com.brilgo.meanbookandroidapp.api.MeanBookApi;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-    final MeanBookApi meanBookApi = MeanBookApi.getInstance();
-    final UserDataStore userDataStore = new UserDataStore();
+    private final MeanBookApi meanBookApi = MeanBookApi.getInstance();
+    private final UserDataStore userDataStore = new UserDataStore();
+
+    protected final MeanBookApi api() {
+        return meanBookApi;
+    }
+
+    protected final UserDataStore dataStore() {
+        return userDataStore;
+    }
 
     protected void onCreate(Bundle savedInstanceState, @LayoutRes int layoutResID) {
         super.onCreate(savedInstanceState);
@@ -23,8 +32,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         setContentView(layoutResID);
         addDefaultToolbar();
-        meanBookApi.init(getApplicationContext());
-        meanBookApi.setCurrentActivity(this);
+        api().init(getApplicationContext());
+        api().errorHandler().setCurrentActivity(this);
     }
 
     private void addDefaultToolbar() {
@@ -33,19 +42,24 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public String getStoredCurrentUsername() {
-        return userDataStore.getCurrentUsername(getApplicationContext());
+        return dataStore().getCurrentUsername(getApplicationContext());
     }
 
-    public void showSnack(String message, View view) {
+    public final void showSnack(String message, View view) {
         Snackbar.make(view, message, Snackbar.LENGTH_LONG).show();
     }
 
-    public void showOkAlert(String title, String message) {
+    public final void showOkAlert(String title, String message) {
         new AlertDialog.Builder(this)
                 .setTitle(title)
                 .setMessage(message)
                 .setCancelable(false)
                 .setPositiveButton("OK", null)
                 .create().show();
+    }
+
+    public String getStringFromEditText(int viewId) {
+        EditText field = (EditText)  findViewById(viewId);
+        return field.getText().toString();
     }
 }

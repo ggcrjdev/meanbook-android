@@ -15,11 +15,11 @@ public class AddPostActivity extends BaseActivity {
     public void addPost(View view) {
         EditText loginField = (EditText) findViewById(R.id.post_field);
         String postText = loginField.getText().toString();
-        meanBookApi.addPost(postText);
-
-        Intent intent = new Intent(this, TimelineActivity.class);
-        startActivity(intent);
-        setResult(RESULT_OK, null);
-        finish();
+        if (api().addPost(postText)) {
+            Intent intent = new Intent(this, TimelineActivity.class);
+            startActivity(intent);
+            setResult(RESULT_OK, null);
+            finish();
+        }
     }
 }

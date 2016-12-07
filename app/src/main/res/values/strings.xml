@@ -17,4 +17,5 @@
     <string name="title_activity_api">Ooops!</string>
     <string name="hint_api_error">):</string>
     <string name="hint_api_error_detail">Sorry, we are experiencing a problem with our services.</string>
+    <string name="title_error_handler_login">Login Notification</string>
 </resources>

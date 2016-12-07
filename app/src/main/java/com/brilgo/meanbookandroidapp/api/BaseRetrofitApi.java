@@ -2,7 +2,6 @@ package com.brilgo.meanbookandroidapp.api;
 
 import android.content.Context;
 
-import com.brilgo.meanbookandroidapp.BaseActivity;
 import com.brilgo.meanbookandroidapp.api.cookie.PersistentCookieStore;
 
 import java.io.IOException;
@@ -21,7 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public abstract class BaseRetrofitApi<E> {
 
     private Retrofit retrofit;
-    private ResponseErrorHandleInterceptor responseErrorHandle;
+    private ResponseErrorHandlerInterceptor responseErrorHandle;
 
     private String apiBaseUrl;
     private Class<E> endpointClass;
@@ -36,7 +35,7 @@ public abstract class BaseRetrofitApi<E> {
         return apiEndpoint;
     }
 
-    <RES> Response<RES> getResponse(Call<RES> apiCall) {
+    <RES> Response<RES> responseFrom(Call<RES> apiCall) {
         try {
             return apiCall.execute();
         } catch (IOException e) {
@@ -44,8 +43,8 @@ public abstract class BaseRetrofitApi<E> {
         }
     }
 
-    <RES> RES getResponseBody(Call<RES> apiCall) {
-        return getResponse(apiCall).body();
+    <RES> RES responseBodyFrom(Call<RES> apiCall) {
+        return responseFrom(apiCall).body();
     }
 
     public void init(Context context) {
@@ -59,7 +58,7 @@ public abstract class BaseRetrofitApi<E> {
         if (retrofit == null) {
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-            responseErrorHandle = new ResponseErrorHandleInterceptor();
+            responseErrorHandle = new ResponseErrorHandlerInterceptor();
             CookieHandler cookieHandler = new CookieManager(
                     new PersistentCookieStore(context), CookiePolicy.ACCEPT_ALL);
             OkHttpClient okHttpClient = new OkHttpClient.Builder()
@@ -77,7 +76,7 @@ public abstract class BaseRetrofitApi<E> {
         }
     }
 
-    public void setCurrentActivity(BaseActivity baseActivity) {
-        responseErrorHandle.setCurrentActivity(baseActivity);
+    public ResponseErrorHandler errorHandler() {
+        return responseErrorHandle;
     }
 }
